@@ -1,0 +1,88 @@
+// redéfinition de certaines variables bootstrap
+$primaire: #01B3A0;
+$yellow:#F0E319;
+
+$primary:$primaire;
+$warning:$yellow;
+
+$pathImage:"../../public/images/";
+
+@import "bootstrap.scss";
+
+// mon css personnalisé
+
+.bg-welcome {
+    background-image: url($pathImage+"home-bienvenue.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center top;
+}
+
+// slider 
+.slider {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.slides {
+    width: 100%;
+}
+
+.slider .slides .item {
+    display: none;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: slide .4s linear;
+}
+
+@keyframes slide {
+    0% {
+        transform: rotateY(180deg);
+    } 
+}
+
+.slider .slides .item.active {
+    display: block;
+    position: relative;
+}
+.slider .slides .item img {
+    max-width: 100%;
+    display: block;
+}
+
+.prev, .next {
+    color:white;
+}
+
+.prev:hover, .next:hover {
+    cursor: pointer;
+}
+
+.control {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+}
+
+.slideText {
+    position: absolute;
+    top: 50px;
+    color: #ffffff;
+    text-shadow: 1px 1px 1px black;
+    left: 30px;
+    animation: textSlide .2s linear .4s backwards;
+    font-size: 1.2rem;
+}
+
+@keyframes textSlide {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+}
+
+// map
+#mapid {
+    height: 600px;
+}

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D.Rail - Application de location de vélo (démo)</title>
+    <meta name="description" content="Projet d'application de location de vélo. Ce site n'est pas un site en production. C'est un exercice d'application frontend en HTML/CSS et JS">
+    <link rel="stylesheet" href="public/css/bootstrap.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://kit.fontawesome.com/5b4c5c3f22.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+              <a class="navbar-brand" href="index.html"> <img src="public/images/logo.png" alt="d.rail"></a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                  <a class="nav-link" href="#reservation">Réservation</a>
+                </div>
+              </div>
+            </div>
+          </nav>
+    </header>
+    <!-- section Intro  -->
+    <section class="mt-5">
+      <div class="container">
+        <div class="row p-3 g-3">
+          <div class="col-lg-6 bg-welcome d-flex flex-column justify-content-between align-items-center rounded shadow">
+            <div class="mt-5 text-center">
+                <img class="d-none d-md-block" src="public/images/logo.svg" width="450px" alt="d.rail">
+                <img class="d-block d-md-none" src="public/images/logo.svg" width="300px" alt="d.rail">
+            </div>
+            <h1 class="display-5 fw-bold text-white mt-5 text-center">L'application web <br> qui vous trouve un vélo quand le votre a déraillé !</h1>
+            <a class="btn btn-warning mt-5 mb-5 text-secondary" href="#reservation">Réserver</a>
+          </div>
+          <div class="col-lg-6">
+            <div class="slider">
+              <div class="control pe-3 ps-3 w-100">
+                <i class="prev fas fa-chevron-circle-left fa-2x"></i>
+                <i class="next fas fa-chevron-circle-right fa-2x float-end"></i>
+              </div>
+              <div class="slides">
+                <div class="item active">
+                  <div class="slideText">
+										<h2 class="display-5 fw-bold">Un problème de vélo ?</h2>
+										<p class="fw-bold">Ou de tout autre moyen de transport ?</p>
+									</div>
+                  <img class="img-fluid" src="public/images/step1.jpg" alt="Etape 1">
+                </div>
+                <div class="item">
+                  <div class="slideText">
+										<h2 class="display-5 fw-bold">Choisissez une station</h2>
+                    <ul class="fw-bold">
+                      <li>Sélectionnez une station sur la carte</li>
+                      <li>Consultez les vélos disponibles</li>
+                      <li>Saisissez votre nom pour réserver</li>
+                    </ul>
+									</div>
+                  <img class="img-fluid" src="public/images/step2.jpg" alt="Etape 2">
+                </div>
+                <div class="item">
+                  <div class="slideText">
+										<h2 class="display-5 fw-bold">Votre vélo vous attend.</h2>
+										<p class="fw-bold">Vous disposez de 20 min pour le récupérer.</p>
+									</div>
+                  <img class="img-fluid" src="public/images/step3.jpg" alt="Etape 3">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- section carte  -->
+    <section id="reservation" class="bg-primary mt-4 py-3">
+      <div class="container">
+        <h2 id="titleMap" class="text-center py-3 fw-bold text-white">Trouvez un vélo à Marseille</h2>
+        <div class="row">
+          <div class="col-lg-6 p-3">
+            <div id="mapid" ></div>
+          </div>
+          <div class="col-lg-6 p-3">
+            <div id="infostation" class="text-white">
+              <h3 id="displayName" class="text-warning"></h3>
+              <p id="displayAddress"></p>
+              <p id="displayCapacity"></p>
+              <p id="displayAvailability"></p>
+            </div>
+            <div id="alertDispo" class="alert alert-primary" role="alert">
+              Veuillez choisir une station sur la carte et remplir le formulaire ci-dessous pour effectuer votre réservation.
+            </div>
+            <hr>
+            <!-- Formulaire  -->
+            <form>
+              <fieldset id="formDisabled" disabled>
+                <div class="row g-3">
+                  <div class="col">
+                    <input id="firstname" type="text" class="form-control" placeholder="Prénom" required>
+                  </div>
+                  <div class="col">
+                    <input id="lastname" type="text" class="form-control" placeholder="Nom" required>
+                  </div>
+                </div>
+                <div class="col mt-3">
+                  <button type="submit" class="btn btn-warning text-secondary">Valider</button>
+                </div>
+              </fieldset>
+            </form>
+            <!-- signature  -->
+            <div id="signature" class="bg-primary mt-3 d-none">
+              <h4 class="text-white">Votre signature</h4>
+              <canvas class="bg-white">
+                Votre navigateur n'est pas compatible avec un élément de cette page. L'application risque de ne pas fonctionner correctement.
+              </canvas>
+              <div id="alertSignature" class="alert alert-danger d-none" role="alert">
+                Vous devez signer dans le cadre ci-dessus avant de pouvoir effectuer votre réservation.
+              </div>
+              <div class="mt-2">
+                <a id="effacer" href="#" class="btn btn-danger">Effacer</a>
+                <a id="reserver" href="#reservationSuccess" class="btn btn-warning">Réserver</a>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Section récapitulatif de la réservation  -->
+    <section id="reservationSuccess" class="my-5 d-none">
+      <div class="container">
+        <div class="row">
+          <div class="col text-center">
+            <h3 class="text-primary">Réservation effectuée avec succès</h3>
+            <p id="recapReservation">Votre vélo est réservé à la station... au nom de ...</p>
+            <p>Vous disposez de <span class="badge bg-primary" id="countDown"></span> pour récupérer le vélo.</p>
+            
+          </div>
+        </div>
+      </div>
+      
+    </section>
+    <script src="public/js/slide.js"></script>
+    <script src="public/js/map.js"></script>
+    <script src="public/js/reservation.js"></script>
+    <script src="public/js/canvas.js"></script>
+    <script src="public/js/d-rail.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
